@@ -2,10 +2,6 @@
   "version": 2,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/frontend/dist/$1" }
-  ],
-  "builds": [
-    { "src": "api/chat.js", "use": "@vercel/node" },
-    { "src": "frontend/package.json", "use": "@vercel/static-build" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
