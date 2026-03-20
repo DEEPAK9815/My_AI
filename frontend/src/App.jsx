@@ -3,7 +3,9 @@ import axios from 'axios';
 import { Send, Moon, Sun, Loader2, Sparkles, User, Trash2, Copy, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_URL = 'http://localhost:5000/chat';
+const API_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:5000/chat' 
+  : '/api/chat';
 
 function App() {
   const [input, setInput] = useState('');
