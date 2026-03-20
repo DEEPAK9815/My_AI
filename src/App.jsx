@@ -48,7 +48,15 @@ function App() {
       };
       setMessages(prev => [...prev, aiMsg]);
     } catch (err) {
-      setMessages(prev => [...prev, { id: Date.now(), role: 'assistant', content: "Lost connection to the Nebula. Ensure backend is running.", isError: true }]);
+      console.error('Error:', err);
+      const detail = err.response?.data?.details || err.message;
+      const aiMsg = { 
+        id: Date.now(), 
+        role: 'assistant', 
+        content: `Neural connection failed: ${detail}. Ensure your API key is correct and the backend is live.`, 
+        isError: true 
+      };
+      setMessages(prev => [...prev, aiMsg]);
     } finally {
       setLoading(false);
     }
