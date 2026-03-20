@@ -11,13 +11,7 @@ app.use(express.json());
 
 const HF_API_KEY = process.env.HF_API_KEY;
 const API_URL = "https://router.huggingface.co/v1/chat/completions";
-
-// A list of models to try if one fails
-const MODELS = [
-    'Qwen/Qwen2.5-7B-Instruct',
-    'meta-llama/Llama-3.1-8B-Instruct',
-    'mistralai/Mistral-7B-Instruct-v0.3'
-];
+const MODEL_ID = "Qwen/Qwen2.5-7B-Instruct";
 
 app.post('/chat', async (req, res) => {
     const { messages } = req.body;
@@ -26,51 +20,43 @@ app.post('/chat', async (req, res) => {
         return res.status(400).json({ error: "Messages array is required." });
     }
 
-    let lastError = null;
-
-    // Try multiple models to ensure success
-    for (const modelId of MODELS) {
-        try {
-            console.log(`📡 Connecting to Neural Path: ${modelId}...`);
-            const response = await axios.post(
-                API_URL,
-                {
-                    model: modelId,
-                    messages: [
-                        { role: "system", content: "You are a helpful AI assistant named Dpk AI. You are witty, smart, and friendly." },
-                        ...messages
-                    ],
-                    max_tokens: 512,
-                    temperature: 0.7
+    try {
+        console.log(`📡 Connecting to Dpk AI Hub (${MODEL_ID})...`);
+        const response = await axios.post(
+            API_URL,
+            {
+                model: MODEL_ID,
+                messages: [
+                    { role: "system", content: "You are Dpk AI, a wittty and friendly AI assistant. Be concise and professional." },
+                    ...messages
+                ],
+                max_tokens: 512,
+                temperature: 0.7
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${HF_API_KEY}`,
+                    'Content-Type': 'application/json'
                 },
-                {
-                    headers: {
-                        'Authorization': `Bearer ${HF_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    timeout: 60000 // 60s timeout for model loading
-                }
-            );
-
-            const content = response.data.choices[0].message.content;
-            return res.json({ content: content.trim() });
-            
-        } catch (error) {
-            lastError = error;
-            console.error(`❌ Path ${modelId} failed:`, error.response?.data?.error?.message || error.message);
-            // If it's a permission error, we should stop and tell the user
-            if (error.response?.data?.error?.message?.includes("permissions")) {
-                break;
+                timeout: 60000 // 60s
             }
-            continue; // Try next model
-        }
-    }
+        );
 
-    // If we get here, all models failed
-    res.status(500).json({ 
-        error: "Failed to connect to Dpk AI.",
-        details: lastError.response?.data?.error?.message || lastError.response?.data?.error || lastError.message
-    });
+        const content = response.data.choices[0].message.content;
+        res.json({ content: content.trim() });
+        
+    } catch (error) {
+        const detail = error.response?.data?.error?.message || error.message;
+        console.error('❌ AI Hub Connection Error:', detail);
+        
+        // Friendly error for the user
+        res.status(500).json({ 
+            error: "Neural path blocked.",
+            details: detail.includes("permissions") 
+                ? "Your API Token lacks 'Inference' permissions. Please check your Hub settings." 
+                : detail
+        });
+    }
 });
 
 app.listen(PORT, () => {
