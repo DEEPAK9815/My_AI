@@ -13,7 +13,7 @@ app.use(express.json());
 // Hugging Face Config
 const HF_API_KEY = process.env.HF_API_KEY;
 const MODEL_ID = process.env.MODEL_ID;
-const API_URL = `https://api-inference.huggingface.co/models/${MODEL_ID}`;
+const API_URL = `https://router.huggingface.co/models/${MODEL_ID}`;
 
 // System Prompt for personality
 const SYSTEM_PROMPT = "You are a helpful, witty, and intelligent AI assistant. Keep your responses concise yet thorough. Your tone should be friendly and professional.";

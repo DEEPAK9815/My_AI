@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
     const { messages } = req.body;
     const HF_API_KEY = process.env.HF_API_KEY;
     const MODEL_ID = 'mistralai/Mistral-7B-Instruct-v0.2';
-    const API_URL = `https://api-inference.huggingface.co/models/${MODEL_ID}`;
+    const API_URL = `https://router.huggingface.co/models/${MODEL_ID}`;
 
     const SYSTEM_PROMPT = "You are a helpful, witty, and intelligent AI assistant. Keep your responses concise yet thorough. Your tone should be friendly and professional.";
 
