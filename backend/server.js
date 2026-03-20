@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 const HF_API_KEY = process.env.HF_API_KEY;
-const MODEL_ID = process.env.MODEL_ID || 'mistralai/Mistral-7B-Instruct-v0.2';
+const MODEL_ID = process.env.MODEL_ID || 'mistralai/Mistral-7B-Instruct-v0.3';
 const API_URL = "https://router.huggingface.co/v1/chat/completions";
 
 app.post('/chat', async (req, res) => {
