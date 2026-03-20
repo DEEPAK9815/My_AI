@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
 
     const { messages } = req.body;
     const HF_API_KEY = process.env.HF_API_KEY;
-    const MODEL_ID = 'mistralai/Mistral-7B-Instruct-v0.3';
+    const MODEL_ID = 'Qwen/Qwen2.5-7B-Instruct';
     const API_URL = "https://router.huggingface.co/v1/chat/completions";
 
     try {
