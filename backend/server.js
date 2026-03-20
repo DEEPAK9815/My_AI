@@ -14,9 +14,9 @@ const API_URL = "https://router.huggingface.co/v1/chat/completions";
 
 // A list of models to try if one fails
 const MODELS = [
-    'mistralai/Mistral-7B-Instruct-v0.3',
     'Qwen/Qwen2.5-7B-Instruct',
-    'meta-llama/Llama-3.1-8B-Instruct'
+    'meta-llama/Llama-3.1-8B-Instruct',
+    'mistralai/Mistral-7B-Instruct-v0.3'
 ];
 
 app.post('/chat', async (req, res) => {
@@ -48,7 +48,7 @@ app.post('/chat', async (req, res) => {
                         'Authorization': `Bearer ${HF_API_KEY}`,
                         'Content-Type': 'application/json'
                     },
-                    timeout: 10000 // 10s timeout
+                    timeout: 60000 // 60s timeout for model loading
                 }
             );
 
