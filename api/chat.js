@@ -1,7 +1,6 @@
 const axios = require('axios');
 
 module.exports = async (req, res) => {
-    // Add CORS headers manually for serverless
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -19,35 +18,19 @@ module.exports = async (req, res) => {
     const { messages } = req.body;
     const HF_API_KEY = process.env.HF_API_KEY;
     const MODEL_ID = 'mistralai/Mistral-7B-Instruct-v0.2';
-    const API_URL = `https://router.huggingface.co/models/${MODEL_ID}`;
-
-    const SYSTEM_PROMPT = "You are a helpful, witty, and intelligent AI assistant. Keep your responses concise yet thorough. Your tone should be friendly and professional.";
-
-    const formatPrompt = (msgs) => {
-        let prompt = `<s>[INST] ${SYSTEM_PROMPT}\n\n`;
-        msgs.forEach((msg, idx) => {
-            if (msg.role === 'user') {
-                prompt += (idx === 0) ? `${msg.content} [/INST] ` : `[INST] ${msg.content} [/INST] `;
-            } else if (msg.role === 'assistant') {
-                prompt += `${msg.content} </s>`;
-            }
-        });
-        return prompt;
-    };
+    const API_URL = "https://router.huggingface.co/v1/chat/completions";
 
     try {
-        const fullPrompt = formatPrompt(messages);
         const response = await axios.post(
             API_URL,
             {
-                inputs: fullPrompt,
-                parameters: {
-                    max_new_tokens: 512,
-                    temperature: 0.7,
-                    top_p: 0.9,
-                    do_sample: true,
-                    return_full_text: false
-                }
+                model: MODEL_ID,
+                messages: [
+                    { role: "system", content: "You are a helpful, witty, and intelligent AI assistant. Keep your responses concise yet thorough. Your tone should be friendly and professional." },
+                    ...messages
+                ],
+                max_tokens: 512,
+                temperature: 0.7
             },
             {
                 headers: {
@@ -57,14 +40,14 @@ module.exports = async (req, res) => {
             }
         );
 
-        const cleanText = response.data[0].generated_text.replace(/\[\/INST\]/g, '').trim();
-        res.json({ content: cleanText });
+        const content = response.data.choices[0].message.content;
+        res.json({ content: content.trim() });
 
     } catch (error) {
         console.error('API Error:', error.message);
         res.status(500).json({ 
             error: "Failed to fetch response.",
-            details: error.response?.data?.error || error.message
+            details: error.response?.data?.error?.message || error.response?.data?.error || error.message
         });
     }
 };
