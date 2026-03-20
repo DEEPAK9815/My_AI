@@ -6,7 +6,13 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Allowing all origins for local development to avoid Network Errors
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 const HF_API_KEY = process.env.HF_API_KEY;
@@ -49,16 +55,14 @@ app.post('/chat', async (req, res) => {
         const detail = error.response?.data?.error?.message || error.message;
         console.error('❌ AI Hub Connection Error:', detail);
         
-        // Friendly error for the user
         res.status(500).json({ 
             error: "Neural path blocked.",
-            details: detail.includes("permissions") 
-                ? "Your API Token lacks 'Inference' permissions. Please check your Hub settings." 
-                : detail
+            details: detail
         });
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Dpk AI Backend running on http://localhost:${PORT}`);
+// Explicitly listening on 0.0.0.0 to handle all interfaces (localhost, 127.0.0.1, etc.)
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Dpk AI Backend running on http://0.0.0.0:${PORT}`);
 });
