@@ -75,7 +75,7 @@ function App() {
       <header>
         <div className="logo-wrap">
           <div className="logo-icon"><Sparkles size={22} color="white" /></div>
-          <span className="logo-text">NEBULA AI</span>
+          <span className="logo-text">DPK AI</span>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem' }}>
           <button onClick={() => setMessages([])} className="theme-toggle" title="Clear Portal">
@@ -91,7 +91,7 @@ function App() {
         {messages.length === 0 ? (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hero">
             <Sparkles size={60} color="#8b5cf6" style={{ marginBottom: '2rem' }} />
-            <h2>Welcome to Nebula</h2>
+            <h2>Welcome to Dpk AI</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem' }}>Initiate a neural link to begin.</p>
           </motion.div>
         ) : (
@@ -135,7 +135,7 @@ function App() {
       <form className="input-dock" onSubmit={handleSend}>
         <input
           type="text"
-          placeholder="Command the Nebula..."
+          placeholder="Command the AI..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           autoFocus

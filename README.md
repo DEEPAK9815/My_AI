@@ -1,4 +1,4 @@
-# 🌌 Nebula AI Chatbot
+# 🌌 Dpk AI Chatbot
 
 A premium, full-stack AI chatbot application featuring a unique "Nebula" aesthetic and Mistral-7B intelligence.
 
