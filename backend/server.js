@@ -12,7 +12,7 @@ app.use(express.json());
 // Trim token to avoid hidden spaces
 const HF_API_KEY = (process.env.HF_API_KEY || "").trim();
 const API_URL = "https://router.huggingface.co/v1/chat/completions";
-const MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct";
+const MODEL_ID = process.env.MODEL_ID || "meta-llama/Llama-3.1-8B-Instruct";
 
 console.log('--- Dpk AI Final Startup Check ---');
 console.log('Model Assigned:', MODEL_ID);

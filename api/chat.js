@@ -16,9 +16,16 @@ module.exports = async (req, res) => {
     }
 
     const { messages } = req.body;
-    const HF_API_KEY = process.env.HF_API_KEY;
-    const MODEL_ID = 'Qwen/Qwen2.5-7B-Instruct';
+    const HF_API_KEY = (process.env.HF_API_KEY || "").trim();
+    const MODEL_ID = process.env.MODEL_ID || 'Qwen/Qwen2.5-7B-Instruct';
     const API_URL = "https://router.huggingface.co/v1/chat/completions";
+    
+    if (!HF_API_KEY) {
+        return res.status(500).json({ 
+            error: "Neural path blocked.", 
+            details: "HF_API_KEY is missing on Vercel. Please set it in the Vercel Dashboard Environment Variables." 
+        });
+    }
 
     try {
         const response = await axios.post(
