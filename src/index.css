@@ -151,6 +151,7 @@ header {
   line-height: 1.6;
   position: relative;
   transition: transform 0.2s ease;
+  white-space: pre-wrap;
 }
 
 .message-node.user .bubble {
@@ -170,6 +171,32 @@ header {
 
 .bubble:hover {
   transform: translateY(-2px);
+}
+
+.bubble h1, .bubble h2, .bubble h3 {
+  margin: 1rem 0 0.5rem 0;
+  color: var(--pri);
+}
+
+.bubble h1:first-child, .bubble h2:first-child, .bubble h3:first-child {
+  margin-top: 0;
+}
+
+.bubble p {
+  margin-bottom: 0.75rem;
+}
+
+.bubble p:last-child {
+  margin-bottom: 0;
+}
+
+.bubble ul, .bubble ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.bubble li {
+  margin-bottom: 0.4rem;
 }
 
 .meta-info {

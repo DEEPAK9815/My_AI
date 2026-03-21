@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "axios": "^1.13.6",
+    "dotenv": "^17.3.1",
     "framer-motion": "^12.4.10",
     "lucide-react": "^0.477.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "dotenv": "^17.3.1"
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@types/react": "^19.0.10",

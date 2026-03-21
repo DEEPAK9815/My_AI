@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Send, Moon, Sun, Loader2, Sparkles, User, Trash2, Copy, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const API_URL = (['localhost', '127.0.0.1'].includes(window.location.hostname))
   ? 'http://127.0.0.1:5001/chat' 
@@ -104,7 +106,9 @@ function App() {
                 className={`message-node ${msg.role}`}
               >
                 <div className="bubble">
-                  {msg.content}
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {msg.content}
+                  </ReactMarkdown>
                 </div>
                 <div className="meta-info">
                   <span>{msg.role === 'user' ? <User size={12} /> : <Sparkles size={12} />} {msg.time}</span>
